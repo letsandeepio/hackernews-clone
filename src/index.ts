@@ -19,15 +19,28 @@ interface ILink {
   url: string;
 }
 
+let idCount = links.length;
+
 const resolvers = {
   Query: {
     info: () => 'Hello, World',
     feed: () => links
+  },
+  Mutation: {
+    post: (_: any, args: ILink) => {
+      const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url
+      };
+      links.push(link);
+      return link;
+    }
   }
 };
 
 const server = new GraphQLServer({
-  typeDefs,
+  typeDefs: './src/schema.graphql',
   resolvers
 });
 
