@@ -13,17 +13,6 @@ const links = [
   }
 ];
 
-const typeDefs = `
-type Query {
-  info: String!
-  feed: [Link!]!
-}
-type Link {
-  id: ID!
-  description: String!
-  url: String!
-}`;
-
 interface ILink {
   id: number;
   description: string;
@@ -34,11 +23,6 @@ const resolvers = {
   Query: {
     info: () => 'Hello, World',
     feed: () => links
-  },
-  Link: {
-    id: (parent: ILink) => parent.id,
-    description: (parent: ILink) => parent.description,
-    url: (parent: ILink) => parent.url
   }
 };
 
