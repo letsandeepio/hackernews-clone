@@ -7,14 +7,14 @@ const links = [
     description: 'Fullstack tutorial for Graphql'
   },
   {
-    id: 'link-0',
+    id: 'link-1',
     url: 'www.howtographql.com',
     description: 'Fullstack tutorial for Graphql'
   }
 ];
 
 interface ILink {
-  id: number;
+  id: string;
   description: string;
   url: string;
 }
@@ -34,6 +34,20 @@ const resolvers = {
         url: args.url
       };
       links.push(link);
+      return link;
+    },
+    updateLink: (_: any, args: ILink) => {
+      const linkToUpdate = links.findIndex((i) => i.id === args.id);
+      links[linkToUpdate] = {
+        id: args.id,
+        description: args.description,
+        url: args.url
+      };
+      return links[linkToUpdate];
+    },
+    deleteLink: (_: any, args: ILink) => {
+      const linkToDelete = links.findIndex((i) => i.id === args.id);
+      const link = links.splice(linkToDelete, 1)[0];
       return link;
     }
   }
