@@ -6,6 +6,8 @@ import Mutation from './resolvers/Mutation';
 import User from './resolvers/User';
 import Link from './resolvers/Link';
 
+import Subscription from './resolvers/Subscription';
+
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
 
@@ -17,6 +19,7 @@ interface Context {
 const resolvers: any = {
   Query,
   Mutation,
+  Subscription,
   User,
   Link
 };

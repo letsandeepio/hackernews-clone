@@ -6,13 +6,17 @@ import { APP_SECRET, getUserId } from '../utils';
 const post = (_: any, { url, description }: any, context: any) => {
   const userId = getUserId(context);
 
-  return context.prisma.link.create({
+  const newLink = context.prisma.link.create({
     data: {
       url,
       description,
       postedBy: { connect: { id: userId } }
     }
   });
+
+  context.pubsub.publish('NEW_LINK', newLink);
+
+  return newLink;
 };
 
 const updateLink = (_: any, { id, url, description }: any, context: any) => {
