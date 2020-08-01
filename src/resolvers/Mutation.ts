@@ -32,11 +32,13 @@ const updateLink = (_: any, { id, url, description }: any, context: any) => {
   return linkToUpdate;
 };
 
-const deleteLink = (_: any, { id, url, description }: any, context: any) => {
-  console.log(typeof id);
+const deleteLink = (_: any, { id }: any, context: any) => {
+  const userId = getUserId(context);
+  id = parseInt(id, 10);
   return context.prisma.link.delete({
     where: {
-      id
+      id,
+      postedById: userId
     }
   });
 };
@@ -86,10 +88,41 @@ async function login(parent: any, args: any, context: any, info: any) {
   };
 }
 
+async function vote(parent: any, args: any, context: any, info: any) {
+  // 1
+  const userId = getUserId(context);
+
+  // 2
+  const prevVote = await context.prisma.vote.findOne({
+    where: {
+      linkId_userId: {
+        linkId: Number(args.linkId),
+        userId
+      }
+    }
+  });
+
+  if (Boolean(prevVote)) {
+    throw new Error(`Already voted for link: ${args.linkId}`);
+  }
+
+  // 3
+  const newVote = context.prisma.vote.create({
+    data: {
+      user: { connect: { id: userId } },
+      link: { connect: { id: Number(args.linkId) } }
+    }
+  });
+  context.pubsub.publish('NEW_VOTE', newVote);
+
+  return newVote;
+}
+
 export default {
   post,
   updateLink,
   deleteLink,
   signup,
-  login
+  login,
+  vote
 };
