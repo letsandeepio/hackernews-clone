@@ -12,7 +12,7 @@ import Subscription from './resolvers/Subscription';
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
 
-interface Context {
+export interface Context {
   prisma: typeof prisma;
   db: any;
 }

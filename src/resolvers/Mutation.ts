@@ -62,7 +62,7 @@ async function signup(parent: any, args: any, context: any, info: any) {
   };
 }
 
-async function login(parent: any, args: any, context: any, info: any) {
+async function login(parent: any, args: any, context: any) {
   // 1
   const user = await context.prisma.user.findOne({
     where: { email: args.email }

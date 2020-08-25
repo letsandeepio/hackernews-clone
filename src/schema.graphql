@@ -1,18 +1,20 @@
 type Query {
   info: String
-  feed(
-    filter: String
-    skip: Int
-    take: Int
-    orderBy: LinkOrderByInput
-  ): [Link!]!
+  feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
 }
+
+type Feed {
+  links: [Link!]!
+  count: Int!
+}
+
 type Link {
   id: ID!
   description: String!
   url: String!
   postedBy: User
   votes: [Vote!]!
+  createdAt: String!
 }
 type Mutation {
   post(url: String!, description: String!): Link!
