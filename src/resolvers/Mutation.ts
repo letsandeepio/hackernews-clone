@@ -103,7 +103,7 @@ async function vote(parent: any, args: any, context: any, info: any) {
   });
 
   if (Boolean(prevVote)) {
-    throw new Error(`Already voted for link: ${args.linkId}`);
+    return false;
   }
 
   // 3
